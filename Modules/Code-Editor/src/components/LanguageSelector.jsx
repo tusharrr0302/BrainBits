@@ -1,48 +1,25 @@
-import {
-	Box,
-	Button,
-	Menu,
-	MenuButton,
-	MenuItem,
-	MenuList,
-	Text,
-} from "@chakra-ui/react";
-import { LANGUAGE_VERSIONS } from "../constants";
-import { LANGUAGE_NAMES } from "../constants";
+import { Select } from '@chakra-ui/react';
 
-const languages = Object.entries(LANGUAGE_VERSIONS);
-const ACTIVE_COLOR = "blue.400";
-
-const LanguageSelector = ({ language, onSelect }) => {
-	return (
-		<Box ml={2} mb={4}>
-			<Text mb={2} fontSize="lg">
-				Language:
-			</Text>
-			<Menu isLazy>
-				<MenuButton as={Button}>{language}</MenuButton>
-				<MenuList bg="#110c1b">
-					{languages.map(([lang, version]) => (
-						<MenuItem
-							key={lang}
-							color={lang === language ? ACTIVE_COLOR : ""}
-							bg={lang === language ? "gray.900" : "transparent"}
-							_hover={{
-								color: ACTIVE_COLOR,
-								bg: "gray.900",
-							}}
-							onClick={() => onSelect(lang)}
-						>
-							{LANGUAGE_NAMES[lang]}
-							{/* &nbsp;
-							<Text as="span" color="gray.600" fontSize="sm">
-								({version})
-							</Text> */}
-						</MenuItem>
-					))}
-				</MenuList>
-			</Menu>
-		</Box>
-	);
-};
-export default LanguageSelector;
+export default function LanguageSelector({ language, onChange }) {
+  return (
+    <Select
+      value={language}
+      onChange={(e) => onChange(e.target.value)}
+      size="sm"
+      w="140px"
+      bg="#3c3c3c"
+      border="1px solid #3c3c3c"
+      color="#cccccc"
+      _hover={{ bg: '#4e4e4e' }}
+      _focus={{ borderColor: '#007acc', boxShadow: 'none' }}
+    >
+      <option value="javascript">JavaScript</option>
+      <option value="python">Python</option>
+      <option value="java">Java</option>
+      <option value="c">C</option>
+      <option value="cpp">C++</option>
+      <option value="html">HTML</option>
+      <option value="css">CSS</option>
+    </Select>
+  );
+}
