@@ -1,0 +1,34 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"); /* Inter */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"); /* Noto Color Emoji */
+
+@import "tailwindcss";
+
+@theme {
+	--breakpoint-xs: 425px;
+	--font-inter: "Inter", "Noto Color Emoji", system-ui, sans-serif;
+}
+
+:root {
+	/* font-synthesis: none;
+	text-rendering: optimizeLegibility; */
+	@apply min-h-dvh font-inter leading-6 font-normal scheme-light-dark bg-linear-to-br from-neutral-950 to-slate-700 text-white antialiased;
+}
+
+/* Sidebar Scrollbar Start */
+::-webkit-scrollbar {
+	width: 0px;
+}
+::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background-color: "#525252";
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+/* Sidebar Scrollbar End */
