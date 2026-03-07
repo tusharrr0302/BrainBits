@@ -1,0 +1,179 @@
+/* BattleLobby.module.css */
+.root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #04050a;
+  position: relative;
+  overflow: hidden;
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(0,229,255,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(124,58,237,0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.card {
+  background: #0c1220;
+  border: 1px solid rgba(0,229,255,0.12);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 40px rgba(0,229,255,0.04);
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.header { text-align: center; margin-bottom: 32px; }
+.icon { font-size: 2.5rem; display: block; margin-bottom: 8px; }
+.title {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+  font-family: 'Orbitron', monospace, sans-serif;
+}
+.titleCyan   { color: #00e5ff; text-shadow: 0 0 20px rgba(0,229,255,0.4); }
+.titlePurple { color: #a855f7; text-shadow: 0 0 20px rgba(168,85,247,0.4); }
+.subtitle  { font-size: 0.85rem; color: #8fb3cc; margin-bottom: 4px; }
+.greeting  { font-size: 0.82rem; color: #4a6a80; }
+.greeting strong { color: #00e5ff; }
+
+/* Action buttons */
+.actions { display: flex; flex-direction: column; gap: 12px; }
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #0f1825;
+  border: 1px solid rgba(0,229,255,0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  color: inherit;
+  width: 100%;
+}
+.actionBtn:hover { transform: translateY(-2px); }
+.createBtn:hover { border-color: rgba(0,229,255,0.3); box-shadow: 0 0 20px rgba(0,229,255,0.1); }
+.joinBtn:hover   { border-color: rgba(168,85,247,0.3); box-shadow: 0 0 20px rgba(168,85,247,0.1); }
+.actionIcon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.createBtn .actionIcon { background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.2); color: #00e5ff; }
+.joinBtn   .actionIcon { background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2); color: #a855f7; }
+.actionTitle { font-weight: 700; color: #e8f4f8; font-size: 0.95rem; margin-bottom: 2px; }
+.actionDesc  { font-size: 0.78rem; color: #4a6a80; }
+
+/* Flow (create/join forms) */
+.flow { display: flex; flex-direction: column; gap: 16px; }
+.backBtn {
+  background: none; border: none;
+  color: #4a6a80; font-size: 0.85rem;
+  cursor: pointer; padding: 0; text-align: left;
+  transition: color 0.2s;
+}
+.backBtn:hover { color: #00e5ff; }
+.flowDesc { font-size: 0.85rem; color: #8fb3cc; }
+
+/* Generic buttons */
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btnCyan   { background: linear-gradient(135deg,#00b8d4,#00e5ff); color: #04050a; }
+.btnCyan:hover   { box-shadow: 0 0 20px rgba(0,229,255,0.4); transform: translateY(-1px); }
+.btnPurple { background: linear-gradient(135deg,#7c3aed,#a855f7); color: white; }
+.btnPurple:hover { box-shadow: 0 0 20px rgba(168,85,247,0.4); transform: translateY(-1px); }
+
+/* Code display */
+.codeBox {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 24px;
+  background: #070b12;
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 12px;
+}
+.codeLabel { font-size: 0.65rem; letter-spacing: 0.2em; color: #4a6a80; }
+.codeValue {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  color: #00e5ff;
+  font-family: 'Orbitron', monospace;
+  text-shadow: 0 0 20px rgba(0,229,255,0.4);
+}
+.copyBtn {
+  padding: 6px 18px;
+  background: transparent;
+  border: 1px solid rgba(0,229,255,0.3);
+  border-radius: 999px;
+  color: #00e5ff;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.copyBtn:hover { background: rgba(0,229,255,0.1); }
+
+/* Waiting dots */
+.waitingRow { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: #8fb3cc; }
+.waitDots { display: flex; gap: 4px; }
+.waitDots span {
+  width: 6px; height: 6px;
+  background: #00e5ff;
+  border-radius: 50%;
+  animation: bounce 1.2s infinite ease-in-out;
+}
+.waitDots span:nth-child(2) { animation-delay: 0.2s; background: #a855f7; }
+.waitDots span:nth-child(3) { animation-delay: 0.4s; background: #00ff88; }
+
+@keyframes bounce {
+  0%,80%,100% { transform: scale(0.7); opacity: 0.5; }
+  40%         { transform: scale(1.1); opacity: 1; }
+}
+
+/* Code input */
+.codeInput {
+  background: #141f2e;
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 8px;
+  color: #e8f4f8;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  padding: 14px;
+  text-align: center;
+  outline: none;
+  width: 100%;
+  font-family: 'Orbitron', monospace;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.codeInput:focus {
+  border-color: rgba(0,229,255,0.4);
+  box-shadow: 0 0 0 3px rgba(0,229,255,0.08);
+}
+.codeInput::placeholder { color: #2a4060; letter-spacing: 0.2em; }
+
+/* Error */
+.error { color: #ff3d71; font-size: 0.82rem; }

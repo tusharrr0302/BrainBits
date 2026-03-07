@@ -1,0 +1,159 @@
+/* BattleSetup.module.css */
+.root {
+  min-height: 100vh;
+  background: #04050a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 24px 48px;
+  gap: 28px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header { text-align: center; width: 100%; }
+.roomBadge {
+  display: inline-block;
+  padding: 3px 14px;
+  background: rgba(0,229,255,0.08);
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 999px;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #00e5ff;
+  margin-bottom: 12px;
+}
+.title { font-size: 1.6rem; color: #e8f4f8; letter-spacing: 0.08em; margin-bottom: 16px; }
+
+.players { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.playerPill {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 14px;
+  background: #0c1220;
+  border: 1px solid rgba(0,229,255,0.1);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: #e8f4f8;
+  transition: all 0.3s;
+}
+.playerReady { border-color: rgba(0,255,136,0.3); background: rgba(0,255,136,0.04); }
+.dot { width: 7px; height: 7px; border-radius: 50%; }
+.dotGreen { background: #00ff88; box-shadow: 0 0 6px #00ff88; }
+.dotWait  { background: #ff9500; animation: pulse 1.5s infinite; }
+.youTag   { font-size: 0.65rem; color: #4a6a80; }
+.readyTag { font-size: 0.6rem; color: #00ff88; letter-spacing: 0.1em; }
+.vs { font-size: 0.72rem; color: #4a6a80; }
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* Sections */
+.sections { width: 100%; display: flex; flex-direction: column; gap: 16px; }
+.section {
+  background: #0c1220;
+  border: 1px solid rgba(0,229,255,0.08);
+  border-radius: 12px;
+  padding: 20px;
+}
+.sectionTitle {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: #4a6a80;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.chipRow { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Generic chip */
+.chip {
+  padding: 7px 16px;
+  background: #141f2e;
+  border: 1px solid rgba(0,229,255,0.1);
+  border-radius: 999px;
+  color: #8fb3cc;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.chip:hover:not(:disabled) { border-color: rgba(0,229,255,0.3); color: #00e5ff; }
+.chip:disabled { cursor: not-allowed; opacity: 0.6; }
+.chipSelected  { background: rgba(0,229,255,0.1); border-color: #00e5ff; color: #00e5ff; }
+
+.chip_easy.chipSelected   { background: rgba(0,255,136,0.1); border-color: #00ff88; color: #00ff88; }
+.chip_medium.chipSelected { background: rgba(255,149,0,0.1);  border-color: #ff9500; color: #ff9500; }
+.chip_hard.chipSelected   { background: rgba(255,61,113,0.1);  border-color: #ff3d71; color: #ff3d71; }
+
+/* Language grid */
+.langRow { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+@media(max-width:540px){ .langRow{ grid-template-columns: repeat(2,1fr); } }
+.langChip {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 12px 8px;
+  background: #141f2e;
+  border: 1px solid rgba(0,229,255,0.1);
+  border-radius: 10px;
+  color: #8fb3cc;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.langChip:hover:not(:disabled){ border-color: rgba(168,85,247,0.4); color: #a855f7; }
+.langChip:disabled{ cursor:not-allowed; opacity:0.6; }
+.langSelected { border-color: #a855f7; color: #a855f7; background: rgba(168,85,247,0.08); box-shadow: 0 0 12px rgba(168,85,247,0.15); }
+
+/* Footer */
+.footer { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+
+.readyRow { display: flex; gap: 20px; }
+.readyDot {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px;
+  background: #0c1220;
+  border: 1px solid rgba(0,229,255,0.08);
+  border-radius: 10px;
+  min-width: 130px;
+  transition: all 0.3s;
+}
+.readyDotOn { border-color: rgba(0,255,136,0.25); background: rgba(0,255,136,0.04); }
+.readyDotIcon { font-size: 1rem; color: #4a6a80; }
+.readyDotOn .readyDotIcon { color: #00ff88; }
+.readyDotName   { font-size: 0.82rem; color: #e8f4f8; }
+.readyDotStatus { font-size: 0.68rem; color: #4a6a80; }
+.readyDotOn .readyDotStatus { color: #00ff88; }
+
+.readyBtn {
+  padding: 13px 36px;
+  background: linear-gradient(135deg,#00c853,#00ff88);
+  color: #04050a;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  animation: glow 2s infinite;
+}
+.readyBtn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0,255,136,0.4); }
+@keyframes glow { 0%,100%{box-shadow:0 0 10px rgba(0,255,136,0.2)} 50%{box-shadow:0 0 25px rgba(0,255,136,0.4)} }
+
+.waiting {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.85rem; color: #8fb3cc;
+  padding: 12px 20px;
+  background: #0c1220;
+  border: 1px solid rgba(0,229,255,0.08);
+  border-radius: 10px;
+}
+.waitDot { width: 8px; height: 8px; border-radius: 50%; background: #a855f7; animation: pulse 1.5s infinite; }
+
+/* Countdown overlay */
+.countdownOverlay {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(4,5,10,0.88);
+  backdrop-filter: blur(8px);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+}
+.countdownRing { position: relative; display: flex; align-items: center; justify-content: center; }
+.countdownNum { position: absolute; font-size: 3rem; font-weight: 900; color: #00e5ff; text-shadow: 0 0 20px rgba(0,229,255,0.6); }
+.countdownLabel { font-size: 0.85rem; letter-spacing: 0.15em; color: #8fb3cc; }
