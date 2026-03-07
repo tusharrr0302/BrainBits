@@ -1,36 +1,40 @@
-import { Link, useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
+import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-
+import { useEffect } from "react";
 import { NavItems } from "../helpers/NavItems";
-import { auth } from "../helpers/Firebase";
-import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
-	const {
-		isLoading, // Loading state, the SDK needs to reach Auth0 on load
-		isAuthenticated,
-		error,
-		loginWithRedirect: login, // Starts the login flow
-		logout: auth0Logout, // Starts the logout flow
-		user, // User profile
-	} = useAuth0();
+	const { isLoading, isAuthenticated, error, loginWithRedirect: login, logout: auth0Logout, user } = useAuth0();
 
 	const signup = () => login({ authorizationParams: { screen_hint: "signup" } });
-
 	const logout = () => auth0Logout({ logoutParams: { returnTo: window.location.origin } });
 
-	// const { user } = useAuth();
-	const navigate = useNavigate();
+	useEffect(() => {
+		const saveUserToDB = async () => {
+			if (isAuthenticated && user) {
+				try {
+					const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/createUser`, {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							auth0Id: user.sub,
+							email: user.email,
+							name: user.name,
+							picture: user.picture,
+							nickname: user.nickname,
+						}),
+					});
 
-	const handleLogout = async () => {
-		try {
-			await signOut(auth);
-			navigate("/");
-		} catch (error) {
-			console.error("Error signing out:", error);
-		}
-	};
+					const data = await response.json();
+					// console.log("✅ User saved:", data);
+				} catch (err) {
+					// console.error("❌ Failed to save user:", err);
+				}
+			}
+		};
+
+		saveUserToDB();
+	}, [isAuthenticated, user]);
 
 	return (
 		<nav>
@@ -65,7 +69,7 @@ const Navbar = () => {
 						</button>
 					) : (
 						<button
-							onClick={login}
+							onClick={signup}
 							// to="/login"
 							className="px-6 py-3 bg-cyan-950 border border-cyan-800 rounded-lg cursor-pointer text-sm lg:text-base xl:text-lg 2xl:text-xl z-10"
 						>

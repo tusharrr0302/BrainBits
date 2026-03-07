@@ -3,28 +3,25 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import planRoutes from "./routes/planRoutes.js";
-// import { fileURLToPath } from "url";
-// import { dirname, join } from "path";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import User from "./models/User.js";
 
-// =========================
-// Path & Env Setup (ESM)
-// =========================
 dotenv.config();
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
-
-// // Load env from root and src (fallback)
-// dotenv.config({ path: join(__dirname, "..", ".env") });
-// dotenv.config({ path: join(__dirname, "..", "src", ".env") });
 
 // =========================
 // App Setup
 // =========================
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 
-app.use(cors());
+app.use(
+	cors({
+		origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
+		methods: ["GET", "POST", "PUT", "DELETE"],
+		allowedHeaders: ["Content-Type", "Authorization"],
+		credentials: true,
+	}),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -32,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 // Database Connection
 // =========================
 mongoose
-	.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/sata_planner")
+	.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/brainbits")
 	.then(() => {
 		console.log("✅ MongoDB connected successfully");
 	})
@@ -157,6 +154,51 @@ app.get("/api/health", (req, res) => {
 		status: "ok",
 		message: "BrainBits API is running",
 	});
+});
+
+// User Manipulation
+app.post("/api/user/createUser", async (req, res) => {
+	const { sub, name, email, picture } = req.body;
+
+	try {
+		let existingUser = await User.findOne({ auth0Id: sub });
+
+		if (!existingUser) {
+			const newUser = new User({
+				// auth0Id: sub,
+				name,
+				email,
+				picture,
+				nickname: req.body.nickname || name.split(" ")[0],
+			});
+
+			await newUser.save();
+		}
+
+		res.json({ success: true });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+});
+
+app.patch("/api/user/updateProfile", async (req, res) => {
+	const { email, gitHub, leetCode } = req.body;
+
+	try {
+		const user = await User.findOne({ email });
+
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
+
+		user.gitHub = gitHub;
+		user.leetCode = leetCode;
+
+		await user.save();
+		res.json({ success: true });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
 });
 
 // =========================
