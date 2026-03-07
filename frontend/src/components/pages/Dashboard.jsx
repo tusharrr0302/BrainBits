@@ -117,8 +117,8 @@ export default function Dashboard() {
 	const { user, dbUser } = useAuth();
 
 	const [showModal, setShowModal] = useState(false);
-	const [ghUser, setGhUser] = useState(dbUser.gitHub || "");
-	const [lcUser, setLcUser] = useState(dbUser.leetCode || "");
+	const [ghUser, setGhUser] = useState(dbUser?.gitHub || "");
+	const [lcUser, setLcUser] = useState(dbUser?.leetCode || "");
 	const [graphReady, setGraphReady] = useState(true);
 
 	// Raw data for MentorTip (fetched separately so it can pass to MentorTip)
@@ -157,7 +157,7 @@ export default function Dashboard() {
 	};
 
 	useEffect(() => {
-		if (!dbUser.gitHub && !dbUser.leetCode) {
+		if (!dbUser?.gitHub && !dbUser?.leetCode) {
 			setGraphReady(false);
 			setShowModal(true);
 		}
