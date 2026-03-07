@@ -165,7 +165,7 @@ app.post("/api/user/createUser", async (req, res) => {
 
 		if (!existingUser) {
 			const newUser = new User({
-				auth0Id: sub,
+				// auth0Id: sub,
 				name,
 				email,
 				picture,
@@ -175,6 +175,26 @@ app.post("/api/user/createUser", async (req, res) => {
 			await newUser.save();
 		}
 
+		res.json({ success: true });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+});
+
+app.patch("/api/user/updateProfile", async (req, res) => {
+	const { email, gitHub, leetCode } = req.body;
+
+	try {
+		const user = await User.findOne({ email });
+
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
+
+		user.gitHub = gitHub;
+		user.leetCode = leetCode;
+
+		await user.save();
 		res.json({ success: true });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
