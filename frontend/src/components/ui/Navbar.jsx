@@ -28,7 +28,7 @@ const Navbar = () => {
 					const data = await response.json();
 					// console.log("✅ User saved:", data);
 				} catch (err) {
-					// console.error("❌ Failed to save user:", err);
+					console.error("❌ Failed to save user:", err);
 				}
 			}
 		};

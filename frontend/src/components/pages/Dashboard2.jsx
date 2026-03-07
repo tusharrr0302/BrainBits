@@ -1,23 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import Sidebar from "../ui/Sidebar.jsx";
 import MentorTip from "../ui/MentorTip.jsx";
 import Spacebackground from "../ui/Spacebackground.jsx";
 import ActivityGraph from "../ui/Activitygraph.jsx";
 import "./Dashboard.css";
+import { useEffect } from "react";
 
-// ── helpers (same as ActivityGraph) ─────────────────────────────────────────
-// function getLCCount(calendarObj, date) {
-// 	if (!calendarObj || !date) return 0;
-// 	const ts = Math.floor(date.getTime() / 1000) + 19800;
-// 	for (const delta of [0, -86400, 86400, 19800, -19800]) {
-// 		const v = calendarObj[String(ts + delta)];
-// 		if (v !== undefined) return v;
-// 	}
-// 	return 0;
-// }
-
-// ── Username modal ────────────────────────────────────────────────────────────
 function UsernameModal({ onSubmit, isModalOpen, ghUser, lcUser }) {
 	const { user } = useAuth();
 	const [gh, setGh] = useState(ghUser || "");
@@ -111,43 +100,14 @@ function UsernameModal({ onSubmit, isModalOpen, ghUser, lcUser }) {
 	);
 }
 
-// ── Dashboard ─────────────────────────────────────────────────────────────────
 export default function Dashboard() {
-	const [open, setOpen] = useState(true);
 	const { user, dbUser } = useAuth();
+	const [open, setOpen] = useState(true);
 
 	const [showModal, setShowModal] = useState(false);
-	const [ghUser, setGhUser] = useState(dbUser.gitHub || "");
-	const [lcUser, setLcUser] = useState(dbUser.leetCode || "");
+	const [ghUser, setGhUser] = useState(dbUser.gitHub);
+	const [lcUser, setLcUser] = useState(dbUser.leetCode);
 	const [graphReady, setGraphReady] = useState(true);
-
-	// Raw data for MentorTip (fetched separately so it can pass to MentorTip)
-	const [ghData, setGhData] = useState(null);
-	const [lcData, setLcData] = useState(null);
-
-	const year = new Date().getFullYear();
-
-	// Fetch raw data once usernames are set
-	// useEffect(() => {
-	// 	if (!ghUser && !lcUser) return;
-
-	// 	if (ghUser) {
-	// 		fetch(`https://github-contributions-api.jogruber.de/v4/${ghUser}?format=nested&y=${year}`)
-	// 			.then((r) => r.json())
-	// 			.then(setGhData)
-	// 			.catch(() => {});
-	// 	}
-	// 	if (lcUser) {
-	// 		fetch(`https://alfa-leetcode-api-adi.vercel.app/${lcUser}/calendar?year=${year}`)
-	// 			.then((r) => r.json())
-	// 			.then((d) => {
-	// 				try {
-	// 					setLcData(JSON.parse(d?.submissionCalendar));
-	// 				} catch {}
-	// 			})
-	// 			.catch(() => {});
-	// 	}
-	// }, [ghUser, lcUser]);
 
 	const handleUsernameSubmit = (gh, lc) => {
 		setGhUser(gh);
@@ -166,7 +126,9 @@ export default function Dashboard() {
 	return (
 		<div className="dashboard">
 			<Spacebackground />
+
 			{showModal && <UsernameModal onSubmit={handleUsernameSubmit} isModalOpen={showModal} ghUser={ghUser} lcUser={lcUser} />}
+
 			<Sidebar open={open} setOpen={setOpen} />
 
 			<main className="dashboard-main transition-all duration-300" style={{ marginLeft: open ? "16rem" : "5rem" }}>
@@ -174,7 +136,7 @@ export default function Dashboard() {
 					{/* Breadcrumb */}
 					<p className="breadcrumb">Home Page / Dashboard</p>
 
-					{/* Welcome Block */}
+					{/* Welcome Card — flat dark, matches ActivityGraph */}
 					<div className="welcome-block">
 						<div className="welcome-block-left">
 							<p className="welcome-eyebrow">YOUR LEARNING HUB</p>
@@ -227,8 +189,12 @@ export default function Dashboard() {
 						)
 					)}
 
-					{/* AI Mentor Tip */}
-					<MentorTip ghData={ghData} lcData={lcData} ghUserName={ghUser} lcUserName={lcUser} />
+					{/* Weekly Progress + Mentor Tip */}
+					<div className="bottom-grid">
+						<div className="mentor-wrapper">
+							<MentorTip />
+						</div>
+					</div>
 				</div>
 			</main>
 		</div>

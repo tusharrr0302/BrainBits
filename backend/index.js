@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 8000;
 app.use(
 	cors({
 		origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
-		methods: ["GET", "POST", "PUT", "DELETE"],
+		methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 		allowedHeaders: ["Content-Type", "Authorization"],
 		credentials: true,
 	}),
@@ -157,11 +157,25 @@ app.get("/api/health", (req, res) => {
 });
 
 // User Manipulation
+
+app.get("/api/user", async (req, res) => {
+	const { email } = req.query;
+	try {
+		const user = await User.findOne({ email });
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
+		res.json({ user });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+});
+
 app.post("/api/user/createUser", async (req, res) => {
 	const { sub, name, email, picture } = req.body;
 
 	try {
-		let existingUser = await User.findOne({ auth0Id: sub });
+		let existingUser = await User.findOne({ email });
 
 		if (!existingUser) {
 			const newUser = new User({
@@ -181,7 +195,7 @@ app.post("/api/user/createUser", async (req, res) => {
 	}
 });
 
-app.patch("/api/user/updateProfile", async (req, res) => {
+app.patch("/api/user/updateGHLC", async (req, res) => {
 	const { email, gitHub, leetCode } = req.body;
 
 	try {
