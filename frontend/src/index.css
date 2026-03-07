@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"); /* Inter */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"); /* Noto Color Emoji */
+
+@import "tailwindcss";
+
+@theme {
+	--breakpoint-xs: 425px;
+	--font-inter: "Inter", "Noto Color Emoji", system-ui, sans-serif;
+
+	--color-dark-950: #0b0d12;
+	--color-dark-900: #12141a;
+	--color-dark-800: #181b22;
+	--color-dark-700: #1f232c;
+	--color-dark-600: #2a2f3a;
+	--color-dark-500: #3b4252;
+	--color-dark-400: #6b7280;
+	--color-dark-300: #9aa0ae;
+	--color-dark-200: #d1d5db;
+	--color-primary-400: #6ea8ff;
+	--color-primary-500: #4f8cff;
+	--color-primary-600: #3b74ff;
+	--color-primary-700: #2c5be3;
+
+	--animate-mascot-bounce: mascot 1.5s ease-in-out infinite;
+
+	@keyframes mascot {
+		0%,
+		100% {
+			transform: translateY(0px);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+	}
+}
+
+.glass {
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+	backdrop-filter: blur(30px);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-shadow: 0 0 50px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.ai-bg {
+	background: radial-gradient(circle at top, #181b22 0%, #0b0d12 70%), linear-gradient(180deg, #0b0d12, #0b0d12);
+}
+
+.soft-card {
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+:root {
+	/* font-synthesis: none;
+	text-rendering: optimizeLegibility; */
+	@apply min-h-dvh font-inter leading-6 font-normal scheme-light-dark bg-linear-to-br from-neutral-950 to-slate-700 text-white antialiased;
+}
+
+/* Sidebar Scrollbar Start */
+::-webkit-scrollbar {
+	width: 0px;
+}
+::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background-color: "#525252";
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+/* Sidebar Scrollbar End */

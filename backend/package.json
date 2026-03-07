@@ -1,0 +1,27 @@
+{
+	"name": "sata-backend",
+	"version": "1.0.0",
+	"description": "AI Schedule Generator Backend",
+	"main": "server.js",
+	"type": "module",
+	"scripts": {
+		"start": "nodemon index.js"
+	},
+	"keywords": [
+		"ai",
+		"schedule",
+		"learning"
+	],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@google/generative-ai": "^0.21.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.6.1",
+		"express": "^4.22.1",
+		"mongoose": "^8.3.0"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.0"
+	}
+}
