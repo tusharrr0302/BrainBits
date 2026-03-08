@@ -1,8 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./components/contexts/AuthContext";
 import LandingPage from "./components/pages/LandingPage";
-import Signup from "./components/pages/Signup";
-import Login from "./components/pages/Login";
 import ProtectedRoute from "./components/utils/ProtectedRoutes";
 import Dashboard from "./components/pages/Dashboard";
 import CodeEditor from "./components/pages/CodeEditor";
@@ -15,8 +13,6 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route path={"/"} element={<LandingPage />} />
-					<Route path={"/signup"} element={<Signup />} />
-					<Route path={"/login"} element={<Login />} />
 					<Route
 						path={"/dashboard"}
 						element={
