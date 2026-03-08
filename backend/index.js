@@ -231,7 +231,7 @@ app.patch("/api/user/updateGHLC", async (req, res) => {
 // =========================
 // Start Server
 // =========================
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
 	console.log(`🚀 BrainBits server running on http://localhost:${PORT}`);
 
 	if (!genAI) {

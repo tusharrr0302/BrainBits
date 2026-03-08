@@ -12,12 +12,12 @@ export default function BattleArena() {
 	const { state, actions, socket } = useBattle();
 	const { question, settings, remaining, opponentSubmission, opponentTyping } = state;
 
-	const [activeTab,   setActiveTab]   = useState("desc");
-	const [code,        setCode]        = useState("");
-	const [running,     setRunning]     = useState(false);
-	const [submitting,  setSubmitting]  = useState(false);
-	const [submitted,   setSubmitted]   = useState(false);
-	const [runResults,  setRunResults]  = useState(null);
+	const [activeTab, setActiveTab] = useState("desc");
+	const [code, setCode] = useState("");
+	const [running, setRunning] = useState(false);
+	const [submitting, setSubmitting] = useState(false);
+	const [submitted, setSubmitted] = useState(false);
+	const [runResults, setRunResults] = useState(null);
 	const typingTimer = useRef(null);
 
 	// Set starter code when question loads
@@ -61,7 +61,7 @@ export default function BattleArena() {
 			actions.setSubmission(data);
 			socket.current?.emit("battle:submit", {
 				roomCode: state.roomCode,
-				results:  data.results,
+				results: data.results,
 				submittedAt,
 			});
 		} catch (err) {
@@ -71,13 +71,17 @@ export default function BattleArena() {
 		}
 	};
 
-	if (!question) return (
-		<div className={styles.loading}><div className={styles.spinner} /><p>Loading question…</p></div>
-	);
+	if (!question)
+		return (
+			<div className={styles.loading}>
+				<div className={styles.spinner} />
+				<p>Loading question…</p>
+			</div>
+		);
 
 	const mins = Math.floor(remaining / 60);
 	const secs = remaining % 60;
-	const pct  = Math.max(0, (remaining / state.duration) * 100);
+	const pct = Math.max(0, (remaining / state.duration) * 100);
 	const timerWarn = remaining <= 300;
 	const timerCrit = remaining <= 60;
 
@@ -100,8 +104,12 @@ export default function BattleArena() {
 
 				<div className={`${styles.timer} ${timerCrit ? styles.timerCrit : timerWarn ? styles.timerWarn : ""}`}>
 					<span className={styles.timerIcon}>⏱</span>
-					<span className={styles.timerVal}>{String(mins).padStart(2,"0")}:{String(secs).padStart(2,"0")}</span>
-					<div className={styles.timerBar}><div className={styles.timerFill} style={{ width: `${pct}%` }} /></div>
+					<span className={styles.timerVal}>
+						{String(mins).padStart(2, "0")}:{String(secs).padStart(2, "0")}
+					</span>
+					<div className={styles.timerBar}>
+						<div className={styles.timerFill} style={{ width: `${pct}%` }} />
+					</div>
 				</div>
 			</div>
 
@@ -118,10 +126,15 @@ export default function BattleArena() {
 						Submitted {opponentSubmission.passed}/{opponentSubmission.total} · {fmtMs(opponentSubmission.time)}
 					</span>
 				) : (
-					<span className={styles.oppWorking}><span className={styles.oppDot} /> Working…</span>
+					<span className={styles.oppWorking}>
+						<span className={styles.oppDot} /> Working…
+					</span>
 				)}
 				<div className={styles.oppBar2}>
-					<div className={styles.oppBarFill} style={{ width: opponentSubmission ? `${(opponentSubmission.passed / question.testCases.length) * 100}%` : "0%" }} />
+					<div
+						className={styles.oppBarFill}
+						style={{ width: opponentSubmission ? `${(opponentSubmission.passed / question.testCases.length) * 100}%` : "0%" }}
+					/>
 				</div>
 			</div>
 
@@ -130,18 +143,23 @@ export default function BattleArena() {
 				{/* Problem panel */}
 				<div className={styles.problem}>
 					<div className={styles.tabs}>
-						<button className={`${styles.tab} ${activeTab==="desc"?styles.tabActive:""}`} onClick={() => setActiveTab("desc")}>Description</button>
-						<button className={`${styles.tab} ${activeTab==="ex"?styles.tabActive:""}`}   onClick={() => setActiveTab("ex")}>Examples</button>
+						<button className={`${styles.tab} ${activeTab === "desc" ? styles.tabActive : ""}`} onClick={() => setActiveTab("desc")}>
+							Description
+						</button>
+						<button className={`${styles.tab} ${activeTab === "ex" ? styles.tabActive : ""}`} onClick={() => setActiveTab("ex")}>
+							Examples
+						</button>
 					</div>
-					<div className={styles.problemBody}>
-						{activeTab === "desc" ? <DescTab q={question} /> : <ExTab q={question} />}
-					</div>
+					<div className={styles.problemBody}>{activeTab === "desc" ? <DescTab q={question} /> : <ExTab q={question} />}</div>
 				</div>
 
 				{/* Editor panel */}
 				<div className={styles.editorPanel}>
 					<div className={styles.editorBar}>
-						<span className={styles.langBadge}><span className={styles.langDot} />{settings.language}</span>
+						<span className={styles.langBadge}>
+							<span className={styles.langDot} />
+							{settings.language}
+						</span>
 						<div className={styles.editorBtns}>
 							<button className={`${styles.eBtn} ${styles.eBtnRun}`} onClick={handleRun} disabled={running || submitting}>
 								{running ? "Running…" : "▶ Run"}
@@ -202,7 +220,11 @@ function DescTab({ q }) {
 			<hr className={styles.sep} />
 			<label className={styles.metaLabel}>Constraints</label>
 			<ul className={styles.constraints}>
-				{q.constraints.map((c, i) => <li key={i}><code>{c}</code></li>)}
+				{q.constraints.map((c, i) => (
+					<li key={i}>
+						<code>{c}</code>
+					</li>
+				))}
 			</ul>
 		</div>
 	);
@@ -214,7 +236,7 @@ function ExTab({ q }) {
 			{q.examples.map((ex, i) => (
 				<div key={i} className={styles.exBlock}>
 					<div className={styles.exLabel}>Example {i + 1}</div>
-					<Row k="Input"  v={ex.input} />
+					<Row k="Input" v={ex.input} />
 					<Row k="Output" v={ex.output} highlight />
 					{ex.explanation && <Row k="Why" v={ex.explanation} plain />}
 				</div>
@@ -227,10 +249,7 @@ function Row({ k, v, highlight, plain }) {
 	return (
 		<div className={styles.exRow}>
 			<span className={styles.exKey}>{k}:</span>
-			{plain
-				? <span className={styles.exPlain}>{v}</span>
-				: <pre className={`${styles.exVal} ${highlight ? styles.exValGreen : ""}`}>{v}</pre>
-			}
+			{plain ? <span className={styles.exPlain}>{v}</span> : <pre className={`${styles.exVal} ${highlight ? styles.exValGreen : ""}`}>{v}</pre>}
 		</div>
 	);
 }
@@ -242,7 +261,13 @@ function ResultsView({ r }) {
 		<div className={styles.resWrap}>
 			<div className={`${styles.resSummary} ${all ? styles.resSumPass : styles.resSumFail}`}>
 				<span>{all ? "✓" : "✗"}</span>
-				<span>{r.mode === "submit" ? "Submit" : "Run"}: <strong>{r.passed}/{r.total}</strong> passed</span>
+				<span>
+					{r.mode === "submit" ? "Submit" : "Run"}:{" "}
+					<strong>
+						{r.passed}/{r.total}
+					</strong>{" "}
+					passed
+				</span>
 				{r.mode === "submit" && <span className={`${styles.badge} ${all ? styles.badge_easy : styles.badge_hard}`}>{r.score}%</span>}
 			</div>
 			{(r.results || []).map((tc, i) => (
@@ -252,15 +277,16 @@ function ResultsView({ r }) {
 					<span className={styles.tcTime}>{tc.executionTime}ms</span>
 					{!tc.passed && (
 						<div className={styles.tcDetail}>
-							{tc.compilationError
-								? <pre className={styles.tcErr}>{tc.error}</pre>
-								: <>
-									<TcRow k="Input"    v={tc.input}    />
+							{tc.compilationError ? (
+								<pre className={styles.tcErr}>{tc.error}</pre>
+							) : (
+								<>
+									<TcRow k="Input" v={tc.input} />
 									<TcRow k="Expected" v={tc.expected} green />
-									<TcRow k="Got"      v={tc.output || "(empty)"} red />
+									<TcRow k="Got" v={tc.output || "(empty)"} red />
 									{tc.error && <TcRow k="Error" v={tc.error} red />}
 								</>
-							}
+							)}
 						</div>
 					)}
 				</div>

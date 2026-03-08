@@ -7,11 +7,11 @@ export default function BattleResult() {
 	const { state, actions, socket } = useBattle();
 	const { battleResult, playerName } = state;
 
-	const isWin  = battleResult?.winner === playerName;
+	const isWin = battleResult?.winner === playerName;
 	const isDraw = !battleResult?.winner || battleResult?.winner === "Draw";
 	const disconnected = battleResult?.reason === "opponent_disconnected";
 
-	const myScore  = Object.values(battleResult?.scores || {}).find((s) => s.name === playerName);
+	const myScore = Object.values(battleResult?.scores || {}).find((s) => s.name === playerName);
 	const oppScore = Object.values(battleResult?.scores || {}).find((s) => s.name !== playerName);
 
 	const handlePlayAgain = () => {
@@ -28,18 +28,21 @@ export default function BattleResult() {
 					<span className={styles.emblem}>{isWin ? "🏆" : isDraw ? "🤝" : "💀"}</span>
 					<h1 className={styles.verdict}>{disconnected ? "Opponent Left" : isWin ? "Victory!" : isDraw ? "Draw!" : "Defeat"}</h1>
 					<p className={styles.sub}>
-						{disconnected ? "Your opponent disconnected." :
-						 isWin        ? `You outperformed ${state.opponentName}!` :
-						 isDraw       ? "A well-matched battle." :
-						               `${battleResult?.winner} wins this round.`}
+						{disconnected
+							? "Your opponent disconnected."
+							: isWin
+								? `You outperformed ${state.opponentName}!`
+								: isDraw
+									? "A well-matched battle."
+									: `${battleResult?.winner} wins this round.`}
 					</p>
 				</div>
 
 				{myScore && oppScore && (
 					<div className={styles.scores}>
-						<ScoreCard score={myScore}  you    winner={isWin} />
+						<ScoreCard score={myScore} you winner={isWin} />
 						<span className={styles.vs}>VS</span>
-						<ScoreCard score={oppScore}        winner={!isWin && !isDraw} />
+						<ScoreCard score={oppScore} winner={!isWin && !isDraw} />
 					</div>
 				)}
 
@@ -51,7 +54,9 @@ export default function BattleResult() {
 				)}
 
 				<div className={styles.footer}>
-					<button className={styles.playAgain} onClick={handlePlayAgain}>⚔ Play Again</button>
+					<button className={styles.playAgain} onClick={handlePlayAgain}>
+						⚔ Play Again
+					</button>
 				</div>
 			</div>
 		</div>
@@ -67,8 +72,8 @@ function ScoreCard({ score, you, winner }) {
 			<div className={styles.scName}>{score.name}</div>
 			<div className={styles.metrics}>
 				<Metric val={`${score.passed}/${score.total}`} label="Tests" />
-				<Metric val={`${score.accuracy}%`}            label="Score" />
-				<Metric val={timeStr}                          label="Time"  />
+				<Metric val={`${score.accuracy}%`} label="Score" />
+				<Metric val={timeStr} label="Time" />
 			</div>
 			<div className={styles.accBar}>
 				<div className={`${styles.accFill} ${winner ? styles.accFillWin : ""}`} style={{ width: `${score.accuracy}%` }} />
@@ -90,14 +95,18 @@ function Confetti() {
 	return (
 		<div className={styles.confetti}>
 			{Array.from({ length: 24 }).map((_, i) => (
-				<div key={i} className={styles.confettiPiece} style={{
-					left: `${Math.random() * 100}%`,
-					animationDelay: `${Math.random() * 1.5}s`,
-					animationDuration: `${1.5 + Math.random() * 1.5}s`,
-					background: ["#00e5ff","#00ff88","#a855f7","#ffd60a"][i % 4],
-					width:  `${4 + Math.random() * 7}px`,
-					height: `${4 + Math.random() * 7}px`,
-				}} />
+				<div
+					key={i}
+					className={styles.confettiPiece}
+					style={{
+						left: `${Math.random() * 100}%`,
+						animationDelay: `${Math.random() * 1.5}s`,
+						animationDuration: `${1.5 + Math.random() * 1.5}s`,
+						background: ["#00e5ff", "#00ff88", "#a855f7", "#ffd60a"][i % 4],
+						width: `${4 + Math.random() * 7}px`,
+						height: `${4 + Math.random() * 7}px`,
+					}}
+				/>
 			))}
 		</div>
 	);

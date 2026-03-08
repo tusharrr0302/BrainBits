@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 
 const BattleContext = createContext();
 
-const SERVER_URL = (import.meta.env.VITE_BACKEND_URL || "http://localhost:8000").replace(/\/api\/.*$/, "").replace(/\/$/, "");
+const SERVER_URL = (import.meta.env.VITE_API_URL || "http://localhost:8080").replace(/\/api\/.*$/, "").replace(/\/$/, "");
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const initialState = {

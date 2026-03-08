@@ -4,49 +4,49 @@ import { useState, useEffect } from "react";
 import { useBattle } from "../../contexts/BattleContext";
 import styles from "./BattleSetup.module.css";
 
-const CATEGORIES  = ["Array", "String", "DP", "Graph", "Linked List", "Any"];
+const CATEGORIES = ["Array", "String", "DP", "Graph", "Linked List", "Any"];
 const DIFFICULTIES = ["Easy", "Medium", "Hard"];
-const LANGUAGES   = [
-	{ id: "python",     label: "Python",     icon: "🐍" },
+const LANGUAGES = [
+	{ id: "python", label: "Python", icon: "🐍" },
 	{ id: "javascript", label: "JavaScript", icon: "⚡" },
-	{ id: "java",       label: "Java",       icon: "☕" },
-	{ id: "cpp",        label: "C++",        icon: "⚙" },
+	{ id: "java", label: "Java", icon: "☕" },
+	{ id: "cpp", label: "C++", icon: "⚙" },
 ];
 
 export default function BattleSetup() {
 	const { state, actions, socket } = useBattle();
-	const [settings, setSettings]   = useState(state.settings);
-	const [ready, setReady]         = useState(false);
+	const [settings, setSettings] = useState(state.settings);
+	const [ready, setReady] = useState(false);
 
 	// Register socket listeners for this phase
 	useEffect(() => {
 		const s = socket.current;
 		if (!s) return;
 
-		const onOpponentReady  = ()    => actions.setOpponentReady();
-		const onCountdown      = (d)   => actions.setCountdown(d.seconds);
-		const onBattleStart    = (d)   => actions.battleStart(d);
-		const onTick           = (d)   => actions.tick(d);
-		const onResult         = (d)   => actions.battleResult(d);
-		const onOppSubmission  = (d)   => actions.setOppSubmission(d);
-		const onOppTyping      = ()    => actions.setOppTyping();
+		const onOpponentReady = () => actions.setOpponentReady();
+		const onCountdown = (d) => actions.setCountdown(d.seconds);
+		const onBattleStart = (d) => actions.battleStart(d);
+		const onTick = (d) => actions.tick(d);
+		const onResult = (d) => actions.battleResult(d);
+		const onOppSubmission = (d) => actions.setOppSubmission(d);
+		const onOppTyping = () => actions.setOppTyping();
 
-		s.on("battle:opponent_ready",    onOpponentReady);
-		s.on("battle:countdown",         onCountdown);
-		s.on("battle:start",             onBattleStart);
-		s.on("battle:tick",              onTick);
-		s.on("battle:result",            onResult);
+		s.on("battle:opponent_ready", onOpponentReady);
+		s.on("battle:countdown", onCountdown);
+		s.on("battle:start", onBattleStart);
+		s.on("battle:tick", onTick);
+		s.on("battle:result", onResult);
 		s.on("battle:opponent_submitted", onOppSubmission);
-		s.on("battle:opponent_typing",   onOppTyping);
+		s.on("battle:opponent_typing", onOppTyping);
 
 		return () => {
-			s.off("battle:opponent_ready",    onOpponentReady);
-			s.off("battle:countdown",         onCountdown);
-			s.off("battle:start",             onBattleStart);
-			s.off("battle:tick",              onTick);
-			s.off("battle:result",            onResult);
+			s.off("battle:opponent_ready", onOpponentReady);
+			s.off("battle:countdown", onCountdown);
+			s.off("battle:start", onBattleStart);
+			s.off("battle:tick", onTick);
+			s.off("battle:result", onResult);
 			s.off("battle:opponent_submitted", onOppSubmission);
-			s.off("battle:opponent_typing",   onOppTyping);
+			s.off("battle:opponent_typing", onOppTyping);
 		};
 	}, [actions, socket]);
 
@@ -67,11 +67,15 @@ export default function BattleSetup() {
 						<svg viewBox="0 0 100 100" width="130" height="130">
 							<circle cx="50" cy="50" r="44" fill="none" stroke="#1a2840" strokeWidth="5" />
 							<circle
-								cx="50" cy="50" r="44" fill="none"
-								stroke="#00e5ff" strokeWidth="5"
+								cx="50"
+								cy="50"
+								r="44"
+								fill="none"
+								stroke="#00e5ff"
+								strokeWidth="5"
 								strokeLinecap="round"
 								strokeDasharray="276"
-								strokeDashoffset={276 - (276 * (state.countdown / 5))}
+								strokeDashoffset={276 - 276 * (state.countdown / 5)}
 								transform="rotate(-90 50 50)"
 								style={{ transition: "stroke-dashoffset 0.9s linear" }}
 							/>
@@ -86,7 +90,7 @@ export default function BattleSetup() {
 				<span className={styles.roomBadge}>ROOM · {state.roomCode}</span>
 				<h1 className={styles.title}>Battle Setup</h1>
 				<div className={styles.players}>
-					<PlayerPill name={state.playerName}   ready={ready}               you />
+					<PlayerPill name={state.playerName} ready={ready} you />
 					<span className={styles.vs}>VS</span>
 					<PlayerPill name={state.opponentName || "Waiting…"} ready={state.opponentReady} />
 				</div>
@@ -97,8 +101,13 @@ export default function BattleSetup() {
 				<Section title="DSA Category">
 					<div className={styles.chipRow}>
 						{CATEGORIES.map((c) => (
-							<Chip key={c} label={c} selected={settings.category === c} disabled={ready}
-								onClick={() => !ready && setSettings((s) => ({ ...s, category: c }))} />
+							<Chip
+								key={c}
+								label={c}
+								selected={settings.category === c}
+								disabled={ready}
+								onClick={() => !ready && setSettings((s) => ({ ...s, category: c }))}
+							/>
 						))}
 					</div>
 				</Section>
@@ -107,9 +116,14 @@ export default function BattleSetup() {
 				<Section title="Difficulty">
 					<div className={styles.chipRow}>
 						{DIFFICULTIES.map((d) => (
-							<Chip key={d} label={d} selected={settings.difficulty === d} disabled={ready}
+							<Chip
+								key={d}
+								label={d}
+								selected={settings.difficulty === d}
+								disabled={ready}
 								variant={d.toLowerCase()}
-								onClick={() => !ready && setSettings((s) => ({ ...s, difficulty: d }))} />
+								onClick={() => !ready && setSettings((s) => ({ ...s, difficulty: d }))}
+							/>
 						))}
 					</div>
 				</Section>
@@ -135,12 +149,14 @@ export default function BattleSetup() {
 			{/* Ready footer */}
 			<div className={styles.footer}>
 				<div className={styles.readyRow}>
-					<ReadyDot label="You"                   ready={ready}               />
+					<ReadyDot label="You" ready={ready} />
 					<ReadyDot label={state.opponentName || "Opponent"} ready={state.opponentReady} />
 				</div>
 
 				{!ready ? (
-					<button className={styles.readyBtn} onClick={handleReady}>⚡ I'm Ready!</button>
+					<button className={styles.readyBtn} onClick={handleReady}>
+						⚡ I'm Ready!
+					</button>
 				) : !state.opponentReady ? (
 					<div className={styles.waiting}>
 						<span className={styles.waitDot} />
@@ -178,7 +194,7 @@ function PlayerPill({ name, ready, you }) {
 		<div className={`${styles.playerPill} ${ready ? styles.playerReady : ""}`}>
 			<span className={`${styles.dot} ${ready ? styles.dotGreen : styles.dotWait}`} />
 			<span>{name}</span>
-			{you   && <span className={styles.youTag}>(you)</span>}
+			{you && <span className={styles.youTag}>(you)</span>}
 			{ready && <span className={styles.readyTag}>READY</span>}
 		</div>
 	);

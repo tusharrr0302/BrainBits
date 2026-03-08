@@ -7,7 +7,7 @@ import { createRoom, validateRoom } from "../../api/battleAPI";
 import styles from "./BattleLobby.module.css";
 
 export default function BattleLobby() {
-	const { user, dbUser } = useAuth();
+	const { user } = useAuth();
 	const { state, actions, socket } = useBattle();
 
 	const [view, setView] = useState("home"); // 'home' | 'create' | 'join'
@@ -18,7 +18,7 @@ export default function BattleLobby() {
 	const [error, setError] = useState("");
 
 	const playerName = user?.nickname || user?.name || user?.email?.split("@")[0] || "Player";
-	const userId = dbUser?.id;
+	const userId = user?.sub;
 
 	// ── Create Room ────────────────────────────────────────────────────────────
 	const handleCreate = async () => {
