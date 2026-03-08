@@ -19,23 +19,30 @@ export function AuthProvider({ children }) {
 		}
 	}, [isLoading, isAuthenticated, user]);
 
-	async function fetchDbUser() {
+	const fetchDbUser = async () => {
 		try {
 			const token = await getAccessTokenSilently();
-			const res = await fetch(`/api/users/${user.sub}`, {
-				headers: { Authorization: `Bearer ${token}` },
+			const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user?email=${encodeURIComponent(user?.email)}`, {
+				// method: "GET",
+				// headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
 			});
-			setDbUser(res.ok ? await res.json() : null);
+			const data = await res.json();
+			setDbUser(data?.user);
+			// setDbUser(res.ok ? await res.json() : null);
 		} catch {
 			setDbUser(null);
 		} finally {
 			setDbLoading(false);
 		}
-	}
+	};
 
 	const loading = isLoading || dbLoading;
 
-	return <AuthContext.Provider value={{ user, dbUser, loading, isAuthenticated }}>{!loading && children}</AuthContext.Provider>;
+	return (
+		<>
+			<AuthContext.Provider value={{ user, dbUser, loading, isAuthenticated }}>{!loading && children}</AuthContext.Provider>;
+		</>
+	);
 }
 
 export function useAuth() {

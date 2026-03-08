@@ -6,3 +6,8 @@ Content-Type: application/json
   "gitHub": "Aditya-Pandey-GH",
   "leetCode": "Aditya-Pandey-LC"
 }
+
+
+###
+
+GET http://localhost:8000/api/user?email=abcxyz0101201@gmail.com

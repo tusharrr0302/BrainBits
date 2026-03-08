@@ -33,7 +33,10 @@ const Navbar = () => {
 						}),
 					});
 					const data = await response.json();
-				} catch (err) {}
+					// console.log("✅ User saved:", data);
+				} catch (err) {
+					console.error("❌ Failed to save user:", err);
+				}
 			}
 		};
 		saveUserToDB();
