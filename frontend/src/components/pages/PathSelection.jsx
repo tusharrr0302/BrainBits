@@ -2,7 +2,7 @@ import { useState } from "react";
 
 // ── Design tokens — exact match to dashboard CSS ──────────────────────────────
 const T = {
-  bg:          "#0b1118",
+  // bg:          "#0b1118",
   bgCard:      "#0b1118",
   bgHover:     "#0f1923",
   bgInput:     "#0b1118",
@@ -169,7 +169,7 @@ function PathSelectionView({ onPlanCreated }) {
               </div>
               <input type="range" min="5" max="60" value={weeklyHours}
                 onChange={e => setWeeklyHours(Number(e.target.value))}
-                style={{ width:"100%", marginBottom:6 }}
+                style={{ width:"100%" ,background:"#1e2d3d", borderRadius:2, height:8 }}
               />
               <div style={{ display:"flex", justifyContent:"space-between", fontFamily:T.fontMono, fontSize:10, color:T.textGhost, marginBottom:20 }}>
                 <span>5 hrs</span><span>60 hrs</span>

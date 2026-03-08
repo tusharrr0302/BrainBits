@@ -4,6 +4,7 @@ import ScheduleDashboard from "./ScheduleDashboard";
 import Chatbot from "../ui/TTChatbot";
 import { getPlan } from "../api/ttAPI";
 import Sidebar from "../ui/Sidebar";
+import SpaceBackground from "../ui/Spacebackground";
 
 function ScheduleGenerator() {
 	const [currentPlan, setCurrentPlan] = useState(null);
@@ -65,6 +66,7 @@ function ScheduleGenerator() {
 
 	return (
 		<>
+		<SpaceBackground />
 			<Sidebar open={open} setOpen={setOpen} />
 			<div className={`min-h-screen relative ${open ? "ml-64" : "ml-20"} transition-all`}>
 				{error && (
