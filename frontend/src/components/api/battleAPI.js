@@ -4,7 +4,7 @@
 import axios from "axios";
 
 // Strip any /api/... suffix from VITE_API_URL to get the raw server origin
-const SERVER_ORIGIN = (import.meta.env.VITE_BACKEND_URL || "http://localhost:8000").replace(/\/api\/.*$/, "").replace(/\/$/, "");
+const SERVER_ORIGIN = (import.meta.env.VITE_BACKEND_URL + "/api/plan").replace(/\/api\/.*$/, "").replace(/\/$/, "");
 const BATTLE_API_BASE = `${SERVER_ORIGIN}/api/battle`;
 
 const battleApi = axios.create({
