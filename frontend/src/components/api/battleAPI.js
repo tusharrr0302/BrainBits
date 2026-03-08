@@ -4,9 +4,7 @@
 import axios from "axios";
 
 // Strip any /api/... suffix from VITE_API_URL to get the raw server origin
-const SERVER_ORIGIN = (import.meta.env.VITE_API_URL || "http://localhost:8080")
-	.replace(/\/api\/.*$/, "")
-	.replace(/\/$/, "");
+const SERVER_ORIGIN = (import.meta.env.VITE_BACKEND_URL || "http://localhost:8000").replace(/\/api\/.*$/, "").replace(/\/$/, "");
 const BATTLE_API_BASE = `${SERVER_ORIGIN}/api/battle`;
 
 const battleApi = axios.create({
@@ -23,7 +21,7 @@ battleApi.interceptors.request.use(
 	(error) => {
 		console.error("❌ Battle Request Error:", error);
 		return Promise.reject(error);
-	}
+	},
 );
 
 battleApi.interceptors.response.use(
@@ -38,7 +36,7 @@ battleApi.interceptors.response.use(
 			console.error("❌ Battle No Response:", error.message);
 		}
 		return Promise.reject(error);
-	}
+	},
 );
 
 // ─── Room ─────────────────────────────────────────────────────────────────────

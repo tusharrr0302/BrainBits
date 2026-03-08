@@ -2,26 +2,33 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import planRoutes from "./routes/planRoutes.js";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import User from "./models/User.js";
 
+import User from "./models/User.js";
+import planRoutes from "./routes/planRoutes.js";
+
+// ── Code Battle additions ─────────────────────────────────────────────────────
+import battleRoutes from "./routes/battleRoutes.js";
+import { registerSocketHandlers } from "./socket/socketHandlers.js";
 dotenv.config();
 
 // =========================
-// App Setup
+// App + HTTP + Socket Setup
 // =========================
 const app = express();
-const PORT = process.env.PORT || 8000;
+const httpServer = createServer(app); // wrap express in http.Server for socket.io
+const PORT = process.env.PORT || 8080;
 
-app.use(
-	cors({
+const io = new Server(httpServer, {
+	cors: {
 		origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
-		methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-		allowedHeaders: ["Content-Type", "Authorization"],
-		credentials: true,
-	}),
-);
+		methods: ["GET", "POST"],
+	},
+});
+
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -39,11 +46,17 @@ mongoose
 
 // Routes
 app.use("/api/plan", planRoutes);
+app.use("/api/battle", battleRoutes);
 
 // Health check
 app.get("/health", (req, res) => {
 	res.json({ status: "OK", message: "Backend is running" });
 });
+
+// =========================
+// Socket.io — Code Battle
+// =========================
+registerSocketHandlers(io);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

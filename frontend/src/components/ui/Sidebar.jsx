@@ -3,11 +3,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 
 const NAV_ITEMS = [
-	{ label: "Dashboard",     link: "/dashboard"     },
+	{ label: "Dashboard", link: "/dashboard" },
 	{ label: "Study Planner", link: "/study-planner" },
-	{ label: "Coding Lab",    link: "/coding-lab"    },
-	{ label: "Chatbot",       link: "/chatbot"       },
-	{ label: "Code Battle",   link: "/codebattle"   }
+	{ label: "Coding Lab", link: "/coding-lab" },
+	{ label: "Chatbot", link: "/chatbot" },
+	{ label: "Code Battle", link: "/code-battle" },
 ];
 
 const Sidebar = () => {
@@ -26,8 +26,11 @@ const Sidebar = () => {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
-							auth0Id: user.sub, email: user.email,
-							name: user.name, picture: user.picture, nickname: user.nickname,
+							auth0Id: user.sub,
+							email: user.email,
+							name: user.name,
+							picture: user.picture,
+							nickname: user.nickname,
 						}),
 					});
 				} catch (_) {}
@@ -36,7 +39,9 @@ const Sidebar = () => {
 		saveUserToDB();
 	}, [isAuthenticated, user]);
 
-	useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+	useEffect(() => {
+		setMobileOpen(false);
+	}, [location.pathname]);
 
 	return (
 		<>
@@ -302,17 +307,24 @@ const Sidebar = () => {
 			<div className="sb-root">
 				<div className="sb-overlay" onClick={() => setMobileOpen(false)} />
 
-				<button className="sb-mobile-trigger" onClick={() => setMobileOpen(o => !o)}>
+				<button className="sb-mobile-trigger" onClick={() => setMobileOpen((o) => !o)}>
 					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-						{mobileOpen
-							? <><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>
-							: <><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></>
-						}
+						{mobileOpen ? (
+							<>
+								<line x1="18" y1="6" x2="6" y2="18" />
+								<line x1="6" y1="6" x2="18" y2="18" />
+							</>
+						) : (
+							<>
+								<line x1="3" y1="6" x2="21" y2="6" />
+								<line x1="3" y1="12" x2="21" y2="12" />
+								<line x1="3" y1="18" x2="21" y2="18" />
+							</>
+						)}
 					</svg>
 				</button>
 
 				<aside className="sb-panel">
-
 					{/* Brand */}
 					<Link to="/" className="sb-brand">
 						<span className="sb-brand-text">BrainBits</span>
@@ -326,11 +338,7 @@ const Sidebar = () => {
 						{NAV_ITEMS.map(({ label, link }) => {
 							const active = location.pathname === link;
 							return (
-								<Link
-									key={label}
-									to={link}
-									className={`sb-nav-item${active ? " active" : ""}`}
-								>
+								<Link key={label} to={link} className={`sb-nav-item${active ? " active" : ""}`}>
 									{label}
 								</Link>
 							);
@@ -355,10 +363,11 @@ const Sidebar = () => {
 						{/* User card */}
 						{isAuthenticated && user && (
 							<div className="sb-user-card">
-								{user.picture
-									? <img src={user.picture} alt={user.name} className="sb-avatar" />
-									: <span className="sb-avatar-fallback">{user.name?.[0]?.toUpperCase() ?? "U"}</span>
-								}
+								{user.picture ? (
+									<img src={user.picture} alt={user.name} className="sb-avatar" />
+								) : (
+									<span className="sb-avatar-fallback">{user.name?.[0]?.toUpperCase() ?? "U"}</span>
+								)}
 								<div style={{ overflow: "hidden" }}>
 									<div className="sb-user-name">{user.name}</div>
 									<div className="sb-user-handle">{user.nickname || user.email}</div>
@@ -366,7 +375,6 @@ const Sidebar = () => {
 							</div>
 						)}
 					</div>
-
 				</aside>
 			</div>
 		</>

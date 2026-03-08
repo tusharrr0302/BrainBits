@@ -6,6 +6,7 @@ import Dashboard from "./components/pages/Dashboard";
 import CodeEditor from "./components/pages/CodeEditor";
 import ScheduleGenerator from "./components/pages/ScheduleGenerator";
 import AIChatBot from "./components/pages/AIChatBot";
+import Codebattle from "./components/pages/Codebattle";
 
 const App = () => {
 	return (
@@ -30,6 +31,14 @@ const App = () => {
 						}
 					/>
 					<Route
+						path={"/chatbot"}
+						element={
+							<ProtectedRoute>
+								<AIChatBot />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
 						path={"/coding-lab"}
 						element={
 							<ProtectedRoute>
@@ -38,10 +47,10 @@ const App = () => {
 						}
 					/>
 					<Route
-						path={"/chatbot"}
+						path={"/code-battle"}
 						element={
 							<ProtectedRoute>
-								<AIChatBot />
+								<Codebattle />
 							</ProtectedRoute>
 						}
 					/>

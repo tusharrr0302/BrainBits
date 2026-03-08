@@ -7,18 +7,18 @@ import { createRoom, validateRoom } from "../../api/battleAPI";
 import styles from "./BattleLobby.module.css";
 
 export default function BattleLobby() {
-	const { user } = useAuth();
+	const { user, dbUser } = useAuth();
 	const { state, actions, socket } = useBattle();
 
-	const [view, setView]           = useState("home");    // 'home' | 'create' | 'join'
-	const [roomCode, setRoomCode]   = useState("");
-	const [joinCode, setJoinCode]   = useState("");
-	const [loading, setLoading]     = useState(false);
-	const [copied, setCopied]       = useState(false);
-	const [error, setError]         = useState("");
+	const [view, setView] = useState("home"); // 'home' | 'create' | 'join'
+	const [roomCode, setRoomCode] = useState("");
+	const [joinCode, setJoinCode] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [copied, setCopied] = useState(false);
+	const [error, setError] = useState("");
 
 	const playerName = user?.nickname || user?.name || user?.email?.split("@")[0] || "Player";
-	const userId     = user?.sub;
+	const userId = dbUser?.id;
 
 	// ── Create Room ────────────────────────────────────────────────────────────
 	const handleCreate = async () => {
@@ -52,12 +52,19 @@ export default function BattleLobby() {
 
 	// ── Join Room ──────────────────────────────────────────────────────────────
 	const handleJoin = async () => {
-		if (joinCode.trim().length < 6) { setError("Enter a valid 6-character code."); return; }
+		if (joinCode.trim().length < 6) {
+			setError("Enter a valid 6-character code.");
+			return;
+		}
 		setLoading(true);
 		setError("");
 		try {
 			const data = await validateRoom(joinCode.toUpperCase());
-			if (!data.success) { setError(data.error || "Room not found"); setLoading(false); return; }
+			if (!data.success) {
+				setError(data.error || "Room not found");
+				setLoading(false);
+				return;
+			}
 
 			const s = socket.current;
 			s.connect();
@@ -66,15 +73,18 @@ export default function BattleLobby() {
 			});
 			s.on("room:joined", (payload) => {
 				actions.setRoom({
-					roomCode:          joinCode.toUpperCase(),
+					roomCode: joinCode.toUpperCase(),
 					playerName,
-					isHost:            false,
-					opponentName:      payload.hostName,
+					isHost: false,
+					opponentName: payload.hostName,
 					opponentConnected: true,
-					phase:             "setup",
+					phase: "setup",
 				});
 			});
-			s.on("room:error", ({ message }) => { setError(message); setLoading(false); });
+			s.on("room:error", ({ message }) => {
+				setError(message);
+				setLoading(false);
+			});
 		} catch (err) {
 			setError(err.error || "Failed to join room");
 			setLoading(false);
@@ -97,8 +107,7 @@ export default function BattleLobby() {
 				<div className={styles.header}>
 					<span className={styles.icon}>⚔</span>
 					<h1 className={styles.title}>
-						<span className={styles.titleCyan}>CODE</span>{" "}
-						<span className={styles.titlePurple}>BATTLE</span>
+						<span className={styles.titleCyan}>CODE</span> <span className={styles.titlePurple}>BATTLE</span>
 					</h1>
 					<p className={styles.subtitle}>Real-time competitive DSA coding</p>
 					<p className={styles.greeting}>
@@ -129,7 +138,14 @@ export default function BattleLobby() {
 				{/* Create view */}
 				{view === "create" && (
 					<div className={styles.flow}>
-						<button className={styles.backBtn} onClick={() => { setView("home"); setRoomCode(""); setError(""); }}>
+						<button
+							className={styles.backBtn}
+							onClick={() => {
+								setView("home");
+								setRoomCode("");
+								setError("");
+							}}
+						>
 							← Back
 						</button>
 
@@ -145,10 +161,16 @@ export default function BattleLobby() {
 							<div className={styles.codeBox}>
 								<div className={styles.codeLabel}>ROOM CODE</div>
 								<div className={styles.codeValue}>{roomCode}</div>
-								<button className={styles.copyBtn} onClick={handleCopy}>{copied ? "✓ Copied!" : "Copy Code"}</button>
+								<button className={styles.copyBtn} onClick={handleCopy}>
+									{copied ? "✓ Copied!" : "Copy Code"}
+								</button>
 
 								<div className={styles.waitingRow}>
-									<div className={styles.waitDots}><span /><span /><span /></div>
+									<div className={styles.waitDots}>
+										<span />
+										<span />
+										<span />
+									</div>
 									<span>Waiting for opponent to join…</span>
 								</div>
 							</div>
@@ -159,7 +181,13 @@ export default function BattleLobby() {
 				{/* Join view */}
 				{view === "join" && (
 					<div className={styles.flow}>
-						<button className={styles.backBtn} onClick={() => { setView("home"); setError(""); }}>
+						<button
+							className={styles.backBtn}
+							onClick={() => {
+								setView("home");
+								setError("");
+							}}
+						>
 							← Back
 						</button>
 						<p className={styles.flowDesc}>Enter the 6-character room code your friend shared.</p>
@@ -173,11 +201,7 @@ export default function BattleLobby() {
 							autoFocus
 						/>
 						{error && <p className={styles.error}>{error}</p>}
-						<button
-							className={`${styles.btn} ${styles.btnPurple}`}
-							onClick={handleJoin}
-							disabled={loading || joinCode.length < 6}
-						>
+						<button className={`${styles.btn} ${styles.btnPurple}`} onClick={handleJoin} disabled={loading || joinCode.length < 6}>
 							{loading ? "Joining…" : "Enter Battle →"}
 						</button>
 					</div>
