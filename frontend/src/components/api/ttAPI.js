@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // ✅ FIX: Use absolute URL to backend server
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api/plan" || "http://127.0.0.1:8080/api/plan";
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL + "/api/plan" || "http://localhost:8000/api/plan" || "http://127.0.0.1:8000/api/plan";
 
 const api = axios.create({
 	baseURL: API_BASE_URL,
@@ -21,7 +21,7 @@ api.interceptors.request.use(
 	(error) => {
 		console.error("❌ Request Error:", error);
 		return Promise.reject(error);
-	}
+	},
 );
 
 // Add response interceptor for better error handling
@@ -39,7 +39,7 @@ api.interceptors.response.use(
 			console.error("❌ Request setup error:", error.message);
 		}
 		return Promise.reject(error);
-	}
+	},
 );
 
 export const createPlan = async (userId, learningPath, weeklyHours, preferredDays) => {
